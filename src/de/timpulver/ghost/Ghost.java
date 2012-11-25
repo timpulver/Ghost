@@ -62,7 +62,7 @@ public abstract class Ghost implements PConstants{
 		this.w = w;
 		this.h = h;
 		p.size(w, h, DEFAULT_RENDERER);  
-		screenShot = getScreen(x, y, w, h);
+		screenShot = getScreenCapture(x, y, w, h);
 		p.frame.removeNotify();
 		p.frame.setUndecorated(true);
 		p.registerMethod("pre", this); // new in Processing 2.0
@@ -96,7 +96,7 @@ public abstract class Ghost implements PConstants{
 	 * Returns an image of the screen (full)
 	 */
 	private PImage getFullscreenCapture(){
-	  return getScreen(0, 0, p.displayWidth, p.displayHeight);
+	  return getScreenCapture(0, 0, p.displayWidth, p.displayHeight);
 	}
 
 	/**
@@ -105,8 +105,11 @@ public abstract class Ghost implements PConstants{
 	 * @param y Top Left corner of the area to copy (y)
 	 * @param w Width of the rectangle
 	 * @param h Height of the rectangle
+	 * @return Screenshot of the current desktop,  
+	 * when you call this in Processing before size() the sketch will 
+	 * not be included in the Screenshot. 
 	 */
-	private PImage getScreen(int x, int y, int w, int h){
+	public static PImage getScreenCapture(int x, int y, int w, int h){
 	  GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 	  GraphicsDevice[] gs = ge.getScreenDevices();
 	  //DisplayMode mode = gs[0].getDisplayMode();
