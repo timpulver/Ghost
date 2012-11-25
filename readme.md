@@ -17,3 +17,7 @@ There are three different modes available:
        ghost = new StickyGhost(this, "top", 100);
        
      }
+     
+Tested on Windows 8 and Mac OSX 10.7.5 Lion with Processing 2.0b6
+Please not that you need the **newest Processing beta** for this to run!
+On OSX I did not find a solution to get rid of the drop shadows in window/sticky mode. 
