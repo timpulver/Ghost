@@ -1,6 +1,7 @@
 /*
  * StickyGhost example 
- * This example shows how to create a transparent window at one of the screen boarders (top, right, bottom or left).
+ * This example shows how to create a transparent window 
+ * at one of the screen boarders (top, right, bottom or left).
  * The third parameter is the window heights / width
  * Move the mouse around to locate the window 
  */
