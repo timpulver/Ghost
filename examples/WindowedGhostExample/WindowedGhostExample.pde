@@ -10,8 +10,8 @@ import de.timpulver.ghost.*;
 Ghost ghost;
 
 void setup(){
-  //width, height, window_position_x, window_position_y
-  ghost = new WindowedGhost(this, 300, 300, 300, 300);
+  //window_position_x, window_position_y, width, height
+  ghost = new WindowedGhost(this, 400, 400, 600, 600);
   // uncomment if you don't want background clearing
   //ghost.clearBackground(false);
 }
