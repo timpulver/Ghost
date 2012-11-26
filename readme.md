@@ -22,3 +22,8 @@ Tested on Windows 8 and Mac OSX 10.7.5 Lion with Processing 2.0b6
 
 Please not that you need the **newest Processing beta** for this to run! 
 On OSX I did not find a solution to get rid of the drop shadows in window/sticky mode. 
+
+##Compiler notes##
+
+Some imports are windows only and need some special setup in Eclipse. Follow this tutorial to get rid of the error message on AWTutilities: 
+[Access restriction: Class is not accessible due to restriction on required library](http://www.digizol.com/2008/09/eclipse-access-restriction-on-library.html)
