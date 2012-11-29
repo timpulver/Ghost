@@ -62,6 +62,7 @@ public abstract class Ghost implements PConstants{
 	private boolean clearBackground = true;
 	boolean redrawScreenShot = false;
 	protected static final String DEFAULT_RENDERER = JAVA2D; 
+	private String renderer;
 
 	private int x, y, w, h;
 
@@ -72,26 +73,36 @@ public abstract class Ghost implements PConstants{
 		this.y = y;
 		this.w = w;
 		this.h = h;
-		p.size(w, h, DEFAULT_RENDERER);  
-		screenShotArea = getScreenCapture(x, y, w, h);
-		screenShotFull = getFullscreenCapture();
+		this.renderer = renderer;
+		//p.size(w, h, DEFAULT_RENDERER);  
 		p.frame.removeNotify();
 		p.frame.setUndecorated(true);
-		p.registerMethod("pre", this); // new in Processing 2.0
-		p.image(screenShotArea,0,0, w, h);
 		// if we are on a mac, remove the drop shadow
 		if(isMac()){
+			AWTUtilities.setWindowOpaque(p.frame, false);
+			/*
 			boolean dropShadowRemoved = removeDropShadow(p);
 			if(!dropShadowRemoved){
 				System.err.println("WARNING: Could not remove the drop shadow from Processing frame! " +
 						"You may need to install the latest Java version.");
 			}
+			*/
 		}
+		
 		//AWTUtilities.setWindowOpaque(p.frame, false); // removes shadow on osx
 	}
 	
+	public void start(){
+		//p.frame.addNotify();
+		p.size(w, h, renderer);
+		screenShotArea = getScreenCapture(x, y, w, h);
+		screenShotFull = getFullscreenCapture();
+		p.registerMethod("pre", this); // new in Processing 2.0
+		//p.image(screenShotArea,0,0, w, h);		
+	}
+	
 	private boolean isMac(){
-		return System.getProperty("os.name").toLowerCase().indexOf("max") > 0;
+		return System.getProperty("os.name").toLowerCase().indexOf("mac") > 0;
 	}
 	
 	private boolean removeDropShadow(PApplet p){
@@ -99,10 +110,11 @@ public abstract class Ghost implements PConstants{
             Window win = p.frame;
             //invoke AWTUtilities.setWindowOpacity(win, 0.0f);
             Class awtutil = Class.forName("com.sun.awt.AWTUtilities");
-            Method setWindowOpaque = awtutil.getMethod("setWindowOpacity", Window.class, boolean.class);
-            setWindowOpaque.invoke(win, false);
-        } catch (Exception ex) {
-            //ex.printStackTrace();
+            Method setWindowOpaque = awtutil.getMethod("setWindowOpaque", Window.class, boolean.class);
+            //setWindowOpaque.invoke(win, false);
+            setWindowOpaque.invoke(p.frame, false);
+        } catch (Exception e) {
+            e.printStackTrace();
         	return false;
         }
 		return true;
