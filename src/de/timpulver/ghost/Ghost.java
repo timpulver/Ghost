@@ -79,16 +79,16 @@ public abstract class Ghost implements PConstants{
 		p.frame.setUndecorated(true);
 		// if we are on a mac, remove the drop shadow
 		if(isMac()){
-			AWTUtilities.setWindowOpaque(p.frame, false);
-			/*
+			//AWTUtilities.setWindowOpaque(p.frame, false);
+			
 			boolean dropShadowRemoved = removeDropShadow(p);
 			if(!dropShadowRemoved){
 				System.err.println("WARNING: Could not remove the drop shadow from Processing frame! " +
 						"You may need to install the latest Java version.");
 			}
-			*/
+			
 		}
-		
+		start();
 		//AWTUtilities.setWindowOpaque(p.frame, false); // removes shadow on osx
 	}
 	
