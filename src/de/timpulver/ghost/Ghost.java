@@ -24,32 +24,43 @@
 //
 
 
-/** 
+/* 
  * Tested with Processing 2.0b6 (win8 64bit)
  * Adapted code from jungalero (processing.org forum)
  * 
  * TODO:
  * - reposition screenshot image on window move / resize
+ * 		- take screenshot of whole desktop
+ * 		- implement move(int x, int y)
+ * 			- grab pixles to fit new area from old screenshot
+ * - two different modes? AWTUtil (win only) + Robot  
  */
 
 package de.timpulver.ghost;
 
 import java.awt.AWTException;
+import com.sun.awt.AWTUtilities;
+
+import java.awt.Frame;
 import java.awt.Robot;
 import java.awt.Rectangle;
+import java.awt.Window;
 import java.awt.image.BufferedImage;
 import java.awt.GraphicsEnvironment;
 import java.awt.GraphicsDevice;
+import java.lang.reflect.Method;
 //import java.awt.DisplayMode;
 
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PImage;
 
+
 public abstract class Ghost implements PConstants{
 	private PApplet p;
-	private PImage screenShot;
+	private PImage screenShotArea, screenShotFull;
 	private boolean clearBackground = true;
+	boolean redrawScreenShot = false;
 	protected static final String DEFAULT_RENDERER = JAVA2D; 
 
 	private int x, y, w, h;
@@ -62,11 +73,56 @@ public abstract class Ghost implements PConstants{
 		this.w = w;
 		this.h = h;
 		p.size(w, h, DEFAULT_RENDERER);  
-		screenShot = getScreenCapture(x, y, w, h);
+		screenShotArea = getScreenCapture(x, y, w, h);
+		screenShotFull = getFullscreenCapture();
 		p.frame.removeNotify();
 		p.frame.setUndecorated(true);
 		p.registerMethod("pre", this); // new in Processing 2.0
-		p.image(screenShot,0,0, w, h);
+		p.image(screenShotArea,0,0, w, h);
+		// if we are on a mac, remove the drop shadow
+		if(isMac()){
+			boolean dropShadowRemoved = removeDropShadow(p);
+			if(!dropShadowRemoved){
+				System.err.println("WARNING: Could not remove the drop shadow from Processing frame! " +
+						"You may need to install the latest Java version.");
+			}
+		}
+		//AWTUtilities.setWindowOpaque(p.frame, false); // removes shadow on osx
+	}
+	
+	private boolean isMac(){
+		return System.getProperty("os.name").toLowerCase().indexOf("max") > 0;
+	}
+	
+	private boolean removeDropShadow(PApplet p){
+		try {
+            Window win = p.frame;
+            //invoke AWTUtilities.setWindowOpacity(win, 0.0f);
+            Class awtutil = Class.forName("com.sun.awt.AWTUtilities");
+            Method setWindowOpaque = awtutil.getMethod("setWindowOpacity", Window.class, boolean.class);
+            setWindowOpaque.invoke(win, false);
+        } catch (Exception ex) {
+            //ex.printStackTrace();
+        	return false;
+        }
+		return true;
+	}
+	
+	//TODO, what happens when there is already something drawed?
+	/**
+	 * Sets the screen to a new position, 
+	 * actual reposition will be done on next draw() / pre() call. 
+	 * @param x new x position of the window
+	 * @param y new y position of the window
+	 */
+	public void setPosition(int x, int y){
+		if(!clearBackground){
+			System.err.println("WARNING: setPosition() clears the screen");
+		}
+		this.x = x;
+		this.y = y;
+		screenShotArea.copy(screenShotFull, x, y, w, h, 0, 0, w, h);
+		redrawScreenShot = true;
 	}
 	
 	
@@ -87,8 +143,9 @@ public abstract class Ghost implements PConstants{
 	 */
 	public void pre(){
 		  p.frame.setLocation(x, y);
-		  if(clearBackground){
-			  p.image(screenShot,0,0, w, h);
+		  if(clearBackground || redrawScreenShot){
+			  p.image(screenShotArea,0,0, w, h);
+			  redrawScreenShot = false;
 		  }
 	}
 
