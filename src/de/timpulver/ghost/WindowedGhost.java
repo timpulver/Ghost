@@ -26,13 +26,38 @@
 package de.timpulver.ghost;
 
 import processing.core.PApplet;
+import processing.core.PConstants;
 
+/**
+ * This class can be used to create a transparent windows with a certain width, height and position.
+ * @author Tim Pulver
+ *
+ */
 public class WindowedGhost extends Ghost {
 	
+	/**
+	 * Creates a transparent window using a screenshot of the underlying desktop / windows. 
+	 * Will use the default renderer.
+	 * @param p Processing Sketch (pass "this" from within Processing)
+	 * @param x x-position of the window
+	 * @param y y-position of the window
+	 * @param w width of the window
+	 * @param h height of the window
+	 */
 	public WindowedGhost(PApplet p, int x, int y, int w, int h){
 		init(p, x, y, w, h, DEFAULT_RENDERER);
 	}
-	
+
+	/**
+	 * Creates a transparent window using a screenshot of the underlying desktop / windows.
+	 * @param p Processing Sketch (pass "this" from within Processing)
+	 * @param x x-position of the window
+	 * @param y y-position of the window
+	 * @param w width of the window
+	 * @param h height of the window
+	 * @param renderer the renderer to use (JAVA2D, P2D, P3D, OPENGL)
+	 * @see PConstants
+	 */
 	public WindowedGhost(PApplet p, int x, int y, int w, int h, String renderer){
 		init(p, x, y, w, h, renderer);
 	}

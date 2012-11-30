@@ -26,13 +26,29 @@
 package de.timpulver.ghost;
 
 import processing.core.PApplet;
+import processing.core.PConstants;
 
+/**
+ * This class can be used to create a transparent fullscreen window.
+ * @author Tim Pulver
+ *
+ */
 public class FullscreenGhost extends Ghost{
 	
+	/**
+	 * Creates a transparent fullscreen window.
+	 * @param p The Processing sketch (pass "this" from withing Processing)
+	 */
 	public FullscreenGhost(PApplet p){
 		init(p, 0, 0, p.displayWidth, p.displayHeight, DEFAULT_RENDERER);
 	}
 	
+	/**
+	 * Creates a transparent fullscreen window.
+	 * @param p The Processing sketch (pass "this" from withing Processing)
+	 * @param renderer the renderer to use (JAVA2D, P2D, P3D, OPENGL)
+	 * @see PConstants
+	 */
 	public FullscreenGhost(PApplet p, String renderer){
 		init(p, 0, 0, p.displayWidth, p.displayHeight, renderer);
 	}

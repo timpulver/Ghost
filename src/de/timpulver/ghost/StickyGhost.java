@@ -26,7 +26,15 @@
 package de.timpulver.ghost;
 
 import processing.core.PApplet;
+import processing.core.PConstants;
 
+/**
+ * This class can be used to create a transparent window which sticks to one side of the screen 
+ * and uses the whole width / height. For example <i>StickyGhost(this, "top", 200)</i> creates 
+ * a transparent window which sticks to the top of the screen with height 300. 
+ * @author Tim Pulver
+ *
+ */
 public class StickyGhost extends Ghost {
 	
 	/**
@@ -44,7 +52,8 @@ public class StickyGhost extends Ghost {
 	 * @param p pass 'this' from within your Processing sketch
 	 * @param side which side of the screen the window should stick to
 	 * @param w_h width / height of the window
-	 * @param renderer the renderer to use (P2D, P3D or OPENGL)
+	 * @param renderer the renderer to use (JAVA2D, P2D, P3D, OPENGL)
+	 * @see PConstants
 	 */
 	public StickyGhost(PApplet p, String side, int w_h, String renderer){
 		String lowerCaseSide = side.toLowerCase();

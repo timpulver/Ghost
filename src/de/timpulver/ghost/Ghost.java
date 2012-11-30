@@ -66,7 +66,17 @@ public abstract class Ghost implements PConstants{
 
 	private int x, y, w, h;
 
-	
+	/**
+	 * Creates a transparent window. Will remove screen boarders and other decoration 
+	 * and display a screenshot of the area behind this frame, so it looks transparent.
+	 * @param p Processing PApplet
+	 * @param x x-coordinate of the window
+	 * @param y y-coordinate of the window
+	 * @param w width of the window
+	 * @param h height of the window
+	 * @param renderer the renderer to use (JAVA2D, P2D, P3D, OPENGL)
+	 * @see PConstants
+	 */
 	public void init(PApplet p, int x, int y, int w, int h, String renderer){
 		this.p = p;
 		this.x = x;
@@ -74,53 +84,51 @@ public abstract class Ghost implements PConstants{
 		this.w = w;
 		this.h = h;
 		this.renderer = renderer;
-		//p.size(w, h, DEFAULT_RENDERER);  
+		// remove frame components
 		p.frame.removeNotify();
 		p.frame.setUndecorated(true);
 		// if we are on a mac, remove the drop shadow
 		if(isMac()){
-			//AWTUtilities.setWindowOpaque(p.frame, false);
-			
-			boolean dropShadowRemoved = removeDropShadow(p);
-			if(!dropShadowRemoved){
-				System.err.println("WARNING: Could not remove the drop shadow from Processing frame! " +
-						"You may need to install the latest Java version.");
-			}
-			
+			removeDropShadow(p);
 		}
-		start();
-		//AWTUtilities.setWindowOpaque(p.frame, false); // removes shadow on osx
-	}
-	
-	public void start(){
-		//p.frame.addNotify();
 		p.size(w, h, renderer);
-		screenShotArea = getScreenCapture(x, y, w, h);
-		screenShotFull = getFullscreenCapture();
+		screenShotArea = getScreenCapture(x, y, w, h); // take screenshot of selected area
+		screenShotFull = getFullscreenCapture(); // take fullscreen capture too, in case window moves
 		p.registerMethod("pre", this); // new in Processing 2.0
-		//p.image(screenShotArea,0,0, w, h);		
+		redrawScreenShot = true; // draw the image in pre()
 	}
 	
+	/**
+	 * Checks if the platform is a mac
+	 * @return true, if it's a mac
+	 */
 	private boolean isMac(){
-		return System.getProperty("os.name").toLowerCase().indexOf("mac") > 0;
+		return System.getProperty("os.name").toLowerCase().indexOf("mac") != -1;
 	}
 	
-	private boolean removeDropShadow(PApplet p){
+	/**
+	 * Trys to call an AWTUtilities function to remove the drop shadow on OS X. 
+	 * TODO: Test if program crashes if funtion is not available (Java < 1.60_10)
+	 * @param p Processing PApplet
+	 */
+	private void removeDropShadow(PApplet p){
 		try {
+			/*
             Window win = p.frame;
             //invoke AWTUtilities.setWindowOpacity(win, 0.0f);
             Class awtutil = Class.forName("com.sun.awt.AWTUtilities");
             Method setWindowOpaque = awtutil.getMethod("setWindowOpaque", Window.class, boolean.class);
             //setWindowOpaque.invoke(win, false);
             setWindowOpaque.invoke(p.frame, false);
+            */
+			AWTUtilities.setWindowOpaque(p.frame, false);
         } catch (Exception e) {
-            e.printStackTrace();
-        	return false;
+            //e.printStackTrace();
+        	System.err.println("WARNING: Could not remove the drop shadow from Processing frame! " +
+					"You may need to install the latest Java version.");
         }
-		return true;
 	}
 	
-	//TODO, what happens when there is already something drawed?
 	/**
 	 * Sets the screen to a new position, 
 	 * actual reposition will be done on next draw() / pre() call. 
