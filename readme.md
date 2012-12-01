@@ -25,5 +25,5 @@ On OSX I did not find a solution to get rid of the drop shadows in window/sticky
 
 ##Compiler notes##
 
-The UWTUtilities class is only available in Java 1.6_10+ and needs some special setup in Eclipse. Follow this tutorial to get rid of the error message: 
+The AWTUtilities class is only available in Java 1.6_10+ and needs some special setup in Eclipse. Follow this tutorial to get rid of the error message: 
 [Access restriction: Class is not accessible due to restriction on required library](http://www.digizol.com/2008/09/eclipse-access-restriction-on-library.html)
