@@ -20,8 +20,6 @@ There are three different modes available:
      
 Tested on Windows 8 and Mac OSX 10.7.5 Lion with Processing 2.0b6
 
-Please not that you need the **newest Processing beta** for this to run! 
-
 ##Compiler notes##
 
 The AWTUtilities class is only available in Java 1.6_10+ and needs some special setup in Eclipse. Follow this tutorial to get rid of the error message: 
