@@ -20,6 +20,10 @@ There are three different modes available:
      
 Tested on Windows 8 and Mac OSX 10.7.5 Lion with Processing 2.0b6
 
+## Download
+
+Download the latest library-version here: [timpulver.de/p5libs/ghost](http://www.timpulver.de/p5libs/ghost/)
+
 ##Compiler notes##
 
 The AWTUtilities class is only available in Java 1.6_10+ and needs some special setup in Eclipse. Follow this tutorial to get rid of the error message: 
